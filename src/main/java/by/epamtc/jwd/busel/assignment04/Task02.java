@@ -3,7 +3,7 @@ package by.epamtc.jwd.busel.assignment04;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Task01 {
+public class Task02 {
     private static int getPositiveEvenIntegerFromConsole() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -23,12 +23,9 @@ public class Task01 {
 
     private static int[][] createSquareArray(int size) {
         int[][] array = new int[size][size];
-        int initialElement = 1;
+        int initElement = 1;
         for (int i = 0; i < array.length; i++) {
-            boolean isAscending = ((i % 2) == 0);
-            for (int j = 0; j < array[i].length; j++) {
-                array[i][j] = isAscending ? initialElement++ : --initialElement;
-            }
+            array[i][i] = initElement * (++initElement);
         }
         return array;
     }
@@ -46,7 +43,6 @@ public class Task01 {
                 "will be \"N\"");
         int n = getPositiveEvenIntegerFromConsole();
         int[][] array = createSquareArray(n);
-        System.out.println(Arrays.deepToString(array));
         printSquareArray(array);
     }
 }
