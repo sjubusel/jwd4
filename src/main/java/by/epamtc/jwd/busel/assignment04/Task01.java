@@ -48,6 +48,5 @@ public class Task01 {
         int[][] array = createSquareArray(n);
         System.out.println(Arrays.deepToString(array));
         printSquareArray(array);
-
     }
 }
