@@ -29,12 +29,12 @@ public class Task06 {
     }
 
     private static int[][] getOddMagicSquare(int[][] magicSquare) {
-        return getOddMagicSquare(magicSquare, 1, 0, 0,
+        return getOddMagicSquareInSubsquare(magicSquare, 1, 0, 0,
                 magicSquare.length);
     }
 
-    private static int[][] getOddMagicSquare(int[][] magicSquare, int initValue,
-            int minRow, int minColumn, int size) {
+    private static int[][] getOddMagicSquareInSubsquare(int[][] magicSquare,
+            int initValue, int minRow, int minColumn, int size) {
         int row = minRow;
         int maxRow = minRow + size - 1;
         int column = minColumn + (size / 2);
@@ -65,16 +65,31 @@ public class Task06 {
 
     private static int[][] getSinglyEvenMagicSquare(int[][] magicSquare) {
         int subSize = magicSquare.length / 2;
-        getOddMagicSquare(magicSquare, 1, 0, 0, subSize);
-        getOddMagicSquare(magicSquare, 2 * subSize * subSize + 1, 0, subSize, subSize);
-        getOddMagicSquare(magicSquare, subSize * subSize + 1, subSize, subSize, subSize);
-        getOddMagicSquare(magicSquare, 3 * subSize * subSize + 1, subSize, 0, subSize);
-        makeLeftPermutation(magicSquare);
-        makeCentralPermutation(magicSquare);
+        getOddMagicSquareInSubsquare(magicSquare, 1, 0, 0, subSize);
+//        getOddMagicSquareInSubsquare(magicSquare, 2 * subSize * subSize + 1, 0, subSize, subSize);
+//        getOddMagicSquareInSubsquare(magicSquare, subSize * subSize + 1, subSize, subSize, subSize);
+//        getOddMagicSquareInSubsquare(magicSquare, 3 * subSize * subSize + 1, subSize, 0, subSize);
+        int incrementBase = subSize * subSize;
+        fillSubSquare(magicSquare, incrementBase, subSize, subSize);
+        fillSubSquare(magicSquare, 2 * incrementBase, 0, subSize);
+        fillSubSquare(magicSquare, 3 * incrementBase, subSize, 0);
+        performLeftTransposition(magicSquare);
+        performCentralTransposition(magicSquare);
         return magicSquare;
     }
 
-    private static void makeLeftPermutation(int[][] magicSquare) {
+    private static void fillSubSquare(int[][] magicSquare, int incrementBase,
+            int rowOffset, int columnOffset) {
+        int initSubSquareLength = magicSquare.length / 2;
+        for (int i = 0; i < initSubSquareLength; i++) {
+            for (int j = 0; j < initSubSquareLength; j++) {
+                magicSquare[i + rowOffset][j + columnOffset] = incrementBase
+                        + magicSquare[i][j];
+            }
+        }
+    }
+
+    private static void performLeftTransposition(int[][] magicSquare) {
         int subSize = magicSquare.length / 2;
         int column = 0;
         for (int row = 0; row < subSize; row++) {
@@ -90,7 +105,7 @@ public class Task06 {
         }
     }
 
-    private static void makeCentralPermutation(int[][] magicSquare) {
+    private static void performCentralTransposition(int[][] magicSquare) {
         int subSize = magicSquare.length / 2;
         int centreOffset = (subSize - 3) / 2;
         int leftBoundary = subSize - centreOffset;
