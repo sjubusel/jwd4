@@ -21,27 +21,36 @@ public class Task06 {
     }
 
     private static int[][] getMagicSquare(int size) {
+        int[][] magicSquare = new int[size][size];
         return ((size % 4) != 0)
-               ? ((size % 2) != 0) ? getOddMagicSquare(size)
-                                   : getSinglyEvenMagicSquare(size)
-               : getDoublyEvenMagicSquare(size);
+               ? ((size % 2) != 0) ? getOddMagicSquare(magicSquare)
+                                   : getSinglyEvenMagicSquare(magicSquare)
+               : getDoublyEvenMagicSquare(magicSquare);
     }
 
-    private static int[][] getOddMagicSquare(int size) {
-        int[][] magicSquare = new int[size][size];
-        int row = 0;
-        int column = size / 2;
-        int value = 1;
+    private static int[][] getOddMagicSquare(int[][] magicSquare) {
+        return getOddMagicSquare(magicSquare, 1, 0, 0,
+                magicSquare.length);
+    }
+
+    private static int[][] getOddMagicSquare(int[][] magicSquare, int initValue,
+            int minRow, int minColumn, int size) {
+        int row = minRow;
+        int maxRow = minRow + size - 1;
+        int column = minColumn + (size / 2);
+        int maxColumn = minColumn + size - 1;
+        int value = initValue;
+        int maxValue = initValue + size * size - 1;
         magicSquare[row--][column++] = value;
-        while (++value <= size * size) {
-            if (column >= size) {
-                column = 0;
+        while (++value <= maxValue) {
+            if (column > maxColumn) {
+                column = minColumn;
             }
-            if (row < 0) {
-                row = size - 1;
+            if (row < minRow) {
+                row = maxRow;
             }
-            if (row >= size) {
-                row = 0;
+            if (row > maxRow) {
+                row = minRow;
             }
             magicSquare[row][column] = value;
             if (value % size != 0) {
@@ -54,16 +63,49 @@ public class Task06 {
         return magicSquare;
     }
 
-    private static int[][] getSinglyEvenMagicSquare(int size) {
-        int[][] magicSquare = new int[size][size];
-        int subSize = size / 2;
-        int row;
-        int column;
+    private static int[][] getSinglyEvenMagicSquare(int[][] magicSquare) {
+        int subSize = magicSquare.length / 2;
+        getOddMagicSquare(magicSquare, 1, 0, 0, subSize);
+        getOddMagicSquare(magicSquare, 2 * subSize * subSize + 1, 0, subSize, subSize);
+        getOddMagicSquare(magicSquare, subSize * subSize + 1, subSize, subSize, subSize);
+        getOddMagicSquare(magicSquare, 3 * subSize * subSize + 1, subSize, 0, subSize);
+        makeLeftPermutation(magicSquare);
+        makeCentralPermutation(magicSquare);
         return magicSquare;
     }
 
-    private static int[][] getDoublyEvenMagicSquare(int size) {
-        int[][] magicSquare = new int[size][size];
+    private static void makeLeftPermutation(int[][] magicSquare) {
+        int subSize = magicSquare.length / 2;
+        int column = 0;
+        for (int row = 0; row < subSize; row++) {
+            int temp = magicSquare[row][column];
+            magicSquare[row][column] = magicSquare[row + subSize][column];
+            magicSquare[row + subSize][column] = temp;
+            if (row == 0) {
+                column++;
+            }
+            if (row == (subSize - 2)) {
+                column--;
+            }
+        }
+    }
+
+    private static void makeCentralPermutation(int[][] magicSquare) {
+        int subSize = magicSquare.length / 2;
+        int centreOffset = (subSize - 3) / 2;
+        int leftBoundary = subSize - centreOffset;
+        int rightBoundary = subSize + centreOffset - 1;
+        for (int row = 0; row < subSize; row++) {
+            for (int column = leftBoundary; column <= rightBoundary; column++) {
+                int temp = magicSquare[row][column];
+                magicSquare[row][column] = magicSquare[row + subSize][column];
+                magicSquare[row + subSize][column] = temp;
+            }
+        }
+    }
+
+    private static int[][] getDoublyEvenMagicSquare(int[][] magicSquare) {
+        int size = magicSquare.length;
         int row = 0;
         int column = 0;
         int value = 1;
