@@ -9,10 +9,11 @@ public class Task06 {
         while (true) {
             if (scanner.hasNextInt()) {
                 int number = scanner.nextInt();
-                if (number > 0) {
+                if (number > 2) {
                     return number;
                 } else {
-                    System.out.printf("Non-positive number \"%d\"\n", number);
+                    System.out.printf("Number \"%d\" is not greater than 2\n",
+                            number);
                 }
             } else {
                 System.out.printf("Invalid input \"%s\"\n", scanner.next());
@@ -173,8 +174,8 @@ public class Task06 {
     }
 
     public static void main(String[] args) {
-        System.out.println("Please, insert any positive integer, which " +
-                "will be \"N\"");
+        System.out.println("Please, insert any positive integer, which is" +
+                "greater than 2.");
         int n = getPositiveEvenIntegerFromConsole();
         int[][] magicSquare = getMagicSquare(n);
         printSquareArray(magicSquare);
