@@ -4,12 +4,13 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Task01 {
-    private static int getPositiveEvenIntegerFromConsole() {
-        Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
+
+    private static int receivePositiveEvenIntegerFromConsole() {
         while (true) {
             if (scanner.hasNextInt()) {
                 int number = scanner.nextInt();
-                if (number > 0 && number % 2 == 0) {
+                if ((number > 0) && ((number % 2) == 0)) {
                     return number;
                 } else {
                     System.out.printf("Non-positive or/and even number" +
@@ -44,9 +45,10 @@ public class Task01 {
     public static void main(String[] args) {
         System.out.println("Please, insert any positive even integer, which " +
                 "will be \"N\"");
-        int n = getPositiveEvenIntegerFromConsole();
+        int n = receivePositiveEvenIntegerFromConsole();
         int[][] array = createSquareArray(n);
         System.out.println(Arrays.deepToString(array));
         printSquareArray(array);
+        scanner.close();
     }
 }

@@ -4,8 +4,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Task06 {
-    private static int getPositiveEvenIntegerFromConsole() {
-        Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
+
+    private static int receivePositiveEvenIntegerFromConsole() {
         while (true) {
             if (scanner.hasNextInt()) {
                 int number = scanner.nextInt();
@@ -21,20 +22,20 @@ public class Task06 {
         }
     }
 
-    private static int[][] getMagicSquare(int size) {
+    private static int[][] generateMagicSquare(int size) {
         int[][] magicSquare = new int[size][size];
         return ((size % 4) != 0)
-               ? ((size % 2) != 0) ? getOddMagicSquare(magicSquare)
-                                   : getSinglyEvenMagicSquare(magicSquare)
-               : getDoublyEvenMagicSquare(magicSquare);
+               ? ((size % 2) != 0) ? generateOddMagicSquare(magicSquare)
+                                   : generateSinglyEvenMagicSquare(magicSquare)
+               : generateDoublyEvenMagicSquare(magicSquare);
     }
 
-    private static int[][] getOddMagicSquare(int[][] magicSquare) {
-        return getOddMagicSquareInSubsquare(magicSquare, 1, 0, 0,
+    private static int[][] generateOddMagicSquare(int[][] magicSquare) {
+        return generateOddMagicSquareInSubsquare(magicSquare, 1, 0, 0,
                 magicSquare.length);
     }
 
-    private static int[][] getOddMagicSquareInSubsquare(int[][] magicSquare,
+    private static int[][] generateOddMagicSquareInSubsquare(int[][] magicSquare,
             int initValue, int minRow, int minColumn, int size) {
         int row = minRow;
         int maxRow = minRow + size - 1;
@@ -64,9 +65,9 @@ public class Task06 {
         return magicSquare;
     }
 
-    private static int[][] getSinglyEvenMagicSquare(int[][] magicSquare) {
+    private static int[][] generateSinglyEvenMagicSquare(int[][] magicSquare) {
         int subSize = magicSquare.length / 2;
-        getOddMagicSquareInSubsquare(magicSquare, 1, 0, 0, subSize);
+        generateOddMagicSquareInSubsquare(magicSquare, 1, 0, 0, subSize);
 //        getOddMagicSquareInSubsquare(magicSquare, 2 * subSize * subSize + 1, 0, subSize, subSize);
 //        getOddMagicSquareInSubsquare(magicSquare, subSize * subSize + 1, subSize, subSize, subSize);
 //        getOddMagicSquareInSubsquare(magicSquare, 3 * subSize * subSize + 1, subSize, 0, subSize);
@@ -120,7 +121,7 @@ public class Task06 {
         }
     }
 
-    private static int[][] getDoublyEvenMagicSquare(int[][] magicSquare) {
+    private static int[][] generateDoublyEvenMagicSquare(int[][] magicSquare) {
         int size = magicSquare.length;
         int row = 0;
         int column = 0;
@@ -176,8 +177,9 @@ public class Task06 {
     public static void main(String[] args) {
         System.out.println("Please, insert any positive integer, which is" +
                 "greater than 2.");
-        int n = getPositiveEvenIntegerFromConsole();
-        int[][] magicSquare = getMagicSquare(n);
+        int n = receivePositiveEvenIntegerFromConsole();
+        int[][] magicSquare = generateMagicSquare(n);
         printSquareArray(magicSquare);
+        scanner.close();
     }
 }
